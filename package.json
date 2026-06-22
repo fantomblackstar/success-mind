@@ -1,12 +1,13 @@
 {
-  "name": "success-mind-tmp",
+  "name": "success-mind-mvp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx --env-file=.env.local scripts/seed.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
