@@ -17,8 +17,8 @@ export interface UserSessionPayload {
   name: string;
 }
 
-export async function signToken(payload: Record<string, unknown>, expiresIn = "7d") {
-  return new SignJWT(payload)
+export async function signToken(payload: UserSessionPayload | { role: string }, expiresIn = "7d") {
+  return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiresIn)

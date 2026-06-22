@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
 import { UserLoginForm } from "@/features/user-login/ui/user-login-form";
+import { LinkButton } from "@/shared/ui/link-button";
 import { getUserSession } from "@/shared/lib/session";
-import { Button } from "@/components/ui/button";
 
 export async function LoginScreen() {
   const user = await getUserSession();
@@ -12,9 +11,9 @@ export async function LoginScreen() {
   return (
     <FunnelShell title="Welcome back" subtitle="Enter your email to continue">
       <UserLoginForm />
-      <Button asChild variant="link" className="mt-4 w-full text-purple-300">
-        <Link href="/quiz?step=1">New here? Get Early Access</Link>
-      </Button>
+      <LinkButton href="/quiz?step=1" variant="link" className="mt-4 w-full text-purple-300">
+        New here? Get Early Access
+      </LinkButton>
     </FunnelShell>
   );
 }

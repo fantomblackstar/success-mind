@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/shared/ui/link-button";
 import { PRICING_TIERS } from "@/shared/config/pricing";
 import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
 import { apiFetch, trackEvent } from "@/shared/api/client";
@@ -58,9 +58,9 @@ export function PaywallScreen() {
           </div>
         ))}
       </div>
-      <Button asChild variant="link" className="mt-4 w-full text-zinc-400">
-        <Link href="/">Back to home</Link>
-      </Button>
+      <LinkButton href="/" variant="link" className="mt-4 w-full text-zinc-400">
+        Back to home
+      </LinkButton>
     </FunnelShell>
   );
 }

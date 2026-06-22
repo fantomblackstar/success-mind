@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/shared/ui/link-button";
 import type { UserSessionPayload } from "@/shared/lib/session";
 
 function SuccessMindLogo() {
@@ -29,13 +30,17 @@ export function SiteHeader({ user }: { user: UserSessionPayload | null }) {
               </form>
             </>
           ) : (
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/login">Login</Link>
-            </Button>
+            <LinkButton href="/login" variant="ghost" size="sm">
+              Login
+            </LinkButton>
           )}
-          <Button asChild size="sm" className="bg-purple-600 hover:bg-purple-500">
-            <Link href="/quiz?step=1">Get Early Access</Link>
-          </Button>
+          <LinkButton
+            href="/quiz?step=1"
+            size="sm"
+            className="bg-purple-600 hover:bg-purple-500"
+          >
+            Get Early Access
+          </LinkButton>
         </div>
       </div>
     </header>

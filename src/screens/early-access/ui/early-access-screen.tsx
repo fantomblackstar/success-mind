@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/shared/ui/link-button";
 import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
 import { EARLY_ACCESS_MESSAGE } from "@/shared/config/early-access";
 import { trackEvent } from "@/shared/api/client";
@@ -15,8 +14,6 @@ export function EarlyAccessScreen({
   name: string;
   email: string;
 }) {
-  const router = useRouter();
-
   useEffect(() => {
     trackEvent("early_access_view");
   }, []);
@@ -31,9 +28,9 @@ export function EarlyAccessScreen({
         <p className="text-sm text-zinc-400">
           {EARLY_ACCESS_MESSAGE.footer} <span className="text-zinc-200">{email}</span>
         </p>
-        <Button asChild className="w-full bg-purple-600 hover:bg-purple-500">
-          <Link href="/">Back to home</Link>
-        </Button>
+        <LinkButton href="/" className="w-full bg-purple-600 hover:bg-purple-500">
+          Back to home
+        </LinkButton>
       </div>
     </FunnelShell>
   );
