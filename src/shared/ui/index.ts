@@ -9,6 +9,7 @@ export * from "./label";
 export * from "./link-button";
 export * from "./section-title";
 export * from "./separator";
+export * from "./skeleton";
 export * from "./sonner";
 export * from "./table";
 export * from "./tabs";

@@ -1,5 +1,7 @@
 "use client";
 
+import { QUIZ_STEP_COUNT } from "@/shared/config/quiz";
+
 const QUIZ_KEY = "success_mind_quiz";
 
 export interface StoredQuizAnswer {
@@ -23,7 +25,7 @@ export function setQuizAnswer(questionId: string, answer: string) {
 }
 
 export function isQuizComplete() {
-  return getQuizAnswers().length >= 3;
+  return getQuizAnswers().length >= QUIZ_STEP_COUNT;
 }
 
 export function clearQuizAnswers() {

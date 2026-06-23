@@ -203,13 +203,6 @@
     animation: feedback-scroll 74s linear infinite;
   }
 
-  .hero-gradient-slow {
-    --animate-first: moveVertical 45s ease infinite;
-    --animate-second: moveInCircle 32s reverse infinite;
-    --animate-third: moveInCircle 58s linear infinite;
-    --animate-fourth: moveHorizontal 52s ease infinite;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .animate-feedback-scroll-fast,
     .animate-feedback-scroll-medium,

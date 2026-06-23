@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import type { UtmPayload } from "@server/common/types";
+import { sanitizeUtmPayload } from "@/shared/lib/utm";
 import { COOKIE_NAMES } from "./cookie-names";
 import {
   signAdminToken,
@@ -85,7 +86,7 @@ export async function getUtmFromCookies(): Promise<UtmPayload> {
   const raw = cookieStore.get(COOKIE_NAMES.utm)?.value;
   if (raw) {
     try {
-      return JSON.parse(raw) as UtmPayload;
+      return sanitizeUtmPayload(JSON.parse(raw) as UtmPayload);
     } catch {
       // fall through
     }

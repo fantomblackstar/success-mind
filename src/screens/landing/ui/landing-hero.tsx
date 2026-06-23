@@ -9,7 +9,7 @@ import { ctaClassName } from "../lib/landing-constants";
 export function LandingHero() {
   return (
     <BackgroundGradientAnimation
-      containerClassName="hero-gradient-slow min-h-[88vh]"
+      containerClassName="min-h-[88vh]"
       className="flex min-h-[88vh] w-full flex-col items-center justify-center"
     >
       <section className="relative w-full px-4 py-10 text-center">

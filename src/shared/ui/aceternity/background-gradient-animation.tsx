@@ -3,29 +3,14 @@
 import { cn } from "@/shared/lib";
 import { useEffect, useRef, useState } from "react";
 
-const THEME = {
-  gradientBackgroundStart: "rgb(4, 4, 6)",
-  gradientBackgroundEnd: "rgb(18, 5, 28)",
-  firstColor: "91, 33, 168",
-  secondColor: "126, 34, 206",
-  thirdColor: "147, 51, 234",
-  pointerColor: "168, 85, 247",
-  size: "42%",
-  blobVerticalPosition: "64%",
-} as const;
-
-const blobPositionClass =
-  "absolute top-[calc(var(--blob-y)-var(--size)/2)] left-[calc(50%-var(--size)/2)] h-[var(--size)] w-[var(--size)]";
-
 export function BackgroundGradientAnimation({
-  gradientBackgroundStart = THEME.gradientBackgroundStart,
-  gradientBackgroundEnd = THEME.gradientBackgroundEnd,
-  firstColor = THEME.firstColor,
-  secondColor = THEME.secondColor,
-  thirdColor = THEME.thirdColor,
-  pointerColor = THEME.pointerColor,
-  size = THEME.size,
-  blobVerticalPosition = THEME.blobVerticalPosition,
+  gradientBackgroundStart = "rgb(4, 4, 6)",
+  gradientBackgroundEnd = "rgb(18, 5, 28)",
+  firstColor = "91, 33, 168",
+  secondColor = "126, 34, 206",
+  thirdColor = "147, 51, 234",
+  pointerColor = "168, 85, 247",
+  size = "42%",
   blendingValue = "hard-light",
   children,
   className,
@@ -40,7 +25,6 @@ export function BackgroundGradientAnimation({
   thirdColor?: string;
   pointerColor?: string;
   size?: string;
-  blobVerticalPosition?: string;
   blendingValue?: string;
   children?: React.ReactNode;
   className?: string;
@@ -60,11 +44,9 @@ export function BackgroundGradientAnimation({
     document.body.style.setProperty("--third-color", thirdColor);
     document.body.style.setProperty("--pointer-color", pointerColor);
     document.body.style.setProperty("--size", size);
-    document.body.style.setProperty("--blob-y", blobVerticalPosition);
     document.body.style.setProperty("--blending-value", blendingValue);
   }, [
     blendingValue,
-    blobVerticalPosition,
     firstColor,
     gradientBackgroundEnd,
     gradientBackgroundStart,
@@ -108,15 +90,9 @@ export function BackgroundGradientAnimation({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]",
+        "relative left-0 top-0 w-full overflow-hidden bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]",
         containerClassName,
       )}
-      style={
-        {
-          "--blob-y": blobVerticalPosition,
-          "--size": size,
-        } as React.CSSProperties
-      }
       onMouseMove={interactive ? handleMouseMove : undefined}
     >
       <svg className="hidden">
@@ -134,38 +110,47 @@ export function BackgroundGradientAnimation({
         </defs>
       </svg>
 
+      <div className={cn("relative z-10", className)}>{children}</div>
+
       <div
         className={cn(
-          "gradients-container pointer-events-none absolute inset-0 z-0 blur-lg",
+          "gradients-container pointer-events-none absolute inset-0 z-0 h-full w-full blur-lg",
           isSafari ? "blur-2xl" : "[filter:url(#blurMe)_blur(40px)]",
         )}
       >
         <div
           className={cn(
-            blobPositionClass,
-            "origin-[center_center] bg-[radial-gradient(circle_at_center,_rgba(var(--first-color),0.85)_0,_rgba(var(--first-color),0)_38%)] [mix-blend-mode:var(--blending-value)] opacity-80",
-            "animate-first",
+            "absolute animate-first opacity-100",
+            "top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] h-[var(--size)] w-[var(--size)] [transform-origin:center_center]",
+            "[background:radial-gradient(circle_at_center,_rgba(var(--first-color),_0.8)_0,_rgba(var(--first-color),_0)_50%)_no-repeat]",
+            "[mix-blend-mode:var(--blending-value)]",
           )}
         />
         <div
           className={cn(
-            blobPositionClass,
-            "origin-[calc(50%-400px)] bg-[radial-gradient(circle_at_center,_rgba(var(--second-color),0.75)_0,_rgba(var(--second-color),0)_38%)] [mix-blend-mode:var(--blending-value)] opacity-75",
-            "animate-second",
+            "absolute animate-second opacity-100",
+            "top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] h-[var(--size)] w-[var(--size)] [transform-origin:calc(50%-400px)]",
+            "[background:radial-gradient(circle_at_center,_rgba(var(--second-color),_0.8)_0,_rgba(var(--second-color),_0)_50%)_no-repeat]",
+            "[mix-blend-mode:var(--blending-value)]",
           )}
         />
         <div
           className={cn(
-            blobPositionClass,
-            "origin-[calc(50%+400px)] bg-[radial-gradient(circle_at_center,_rgba(var(--third-color),0.7)_0,_rgba(var(--third-color),0)_38%)] [mix-blend-mode:var(--blending-value)] opacity-70",
-            "animate-third",
+            "absolute animate-third opacity-100",
+            "top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] h-[var(--size)] w-[var(--size)] [transform-origin:calc(50%+400px)]",
+            "[background:radial-gradient(circle_at_center,_rgba(var(--third-color),_0.8)_0,_rgba(var(--third-color),_0)_50%)_no-repeat]",
+            "[mix-blend-mode:var(--blending-value)]",
           )}
         />
 
         {interactive ? (
           <div
             ref={interactiveRef}
-            className="absolute -top-1/2 -left-1/2 h-full w-full bg-[radial-gradient(circle_at_center,_rgba(var(--pointer-color),0.55)_0,_rgba(var(--pointer-color),0)_38%)] [mix-blend-mode:var(--blending-value)] opacity-50"
+            className={cn(
+              "absolute -top-1/2 -left-1/2 h-full w-full opacity-70",
+              "[background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_50%)_no-repeat]",
+              "[mix-blend-mode:var(--blending-value)]",
+            )}
           />
         ) : null}
       </div>
@@ -176,8 +161,6 @@ export function BackgroundGradientAnimation({
           <div className="h-px bg-zinc-950" />
         </div>
       ) : null}
-
-      <div className={cn("relative z-10", className)}>{children}</div>
     </div>
   );
 }

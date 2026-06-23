@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryState, parseAsInteger } from "nuqs";
 import { Button } from "@/shared/ui";
-import { QUIZ_QUESTIONS } from "@/shared/config/quiz";
+import { QUIZ_QUESTIONS, QUIZ_STEP_COUNT } from "@/shared/config/quiz";
 import { FunnelShell, OptionButton } from "@/widgets/funnel-shell";
 import { getQuizAnswers, setQuizAnswer } from "@/shared/lib/quiz-storage";
 import { trackEvent } from "@/shared/api/client";
@@ -19,7 +19,7 @@ export function QuizScreen() {
   const current = QUIZ_QUESTIONS[step - 1];
 
   useEffect(() => {
-    if (step < 1 || step > 3) {
+    if (step < 1 || step > QUIZ_STEP_COUNT) {
       setStep(1);
     }
   }, [step, setStep]);
@@ -37,7 +37,7 @@ export function QuizScreen() {
     if (!selected) return;
     setQuizAnswer(current.id, selected);
 
-    if (step >= 3) {
+    if (step >= QUIZ_STEP_COUNT) {
       trackEvent("quiz_complete");
       router.push(routes.email);
       return;
@@ -51,7 +51,7 @@ export function QuizScreen() {
     <FunnelShell
       title={current.question}
       subtitle="One answer"
-      step={`Step ${step} of 3`}
+      step={`Step ${step} of ${QUIZ_STEP_COUNT}`}
     >
       <div className="space-y-3">
         {current.options.map((option) => (
@@ -76,7 +76,7 @@ export function QuizScreen() {
           disabled={!selected}
           onClick={goNext}
         >
-          {step >= 3 ? "Continue" : "Next"}
+          {step >= QUIZ_STEP_COUNT ? "Continue" : "Next"}
         </Button>
       </div>
     </FunnelShell>

@@ -50,10 +50,10 @@ export const analyticsService = {
     const map = Object.fromEntries(stepCounts.map((s) => [s._id, s.count]));
 
     const pairs = [
-      { from: "landing_view", to: "quiz_step_1", label: "Landing → Quiz" },
-      { from: "quiz_complete", to: "email_capture", label: "Quiz → Email" },
-      { from: "email_capture", to: "paywall_view", label: "Email → Paywall" },
-      { from: "paywall_view", to: "buy_click", label: "Paywall → Buy" },
+      { from: "landing_view", to: "quiz_step_1", label: "Landing → Quiz 1" },
+      { from: "quiz_step_1", to: "quiz_step_2", label: "Quiz 1 → Quiz 2" },
+      { from: "quiz_step_2", to: "email_capture", label: "Quiz 2 → Email" },
+      { from: "email_capture", to: "buy_click", label: "Email → Buy" },
     ];
 
     return pairs.map((pair) => {
