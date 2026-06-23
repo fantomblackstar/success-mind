@@ -8,8 +8,8 @@ A marketing funnel and admin analytics dashboard for **Success Mind** — an AI 
 
 | App | URL |
 |-----|-----|
-| Funnel | [https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/](https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/) |
-| Analytics | [https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/dashboard/login](https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/dashboard/login) |
+| Funnel | [https://success-mind.vercel.app/](https://success-mind.vercel.app/) |
+| Analytics | [https://success-mind.vercel.app/dashboard/login](https://success-mind.vercel.app/dashboard/login) |
 
 ## Run locally
 
