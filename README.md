@@ -4,6 +4,13 @@ A marketing funnel and admin analytics dashboard for **Success Mind** — an AI 
 
 **What it does:** landing page → quiz → email capture → paywall → early access, with UTM tracking and a `/dashboard` view of funnel performance and user attribution.
 
+## Live deployment
+
+| App | URL |
+|-----|-----|
+| Funnel | [https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/](https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/) |
+| Analytics | [https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/dashboard/login](https://success-mind-732zwzc2s-fantomblackstars-projects.vercel.app/dashboard/login) |
+
 ## Run locally
 
 **Prerequisites:** Node.js 20+, pnpm, MongoDB (Atlas or local).

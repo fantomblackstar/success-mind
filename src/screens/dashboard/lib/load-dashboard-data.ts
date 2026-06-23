@@ -6,6 +6,7 @@ import type {
   Overview,
   SourceAnalytics,
 } from "./dashboard-types";
+import { mergeSourceAnalytics, normalizeAttributionSources } from "./dashboard-utils";
 
 type SourceApiRow = {
   _id: string;
@@ -31,11 +32,13 @@ export async function loadDashboardData(): Promise<DashboardData> {
   return {
     overview,
     conversions,
-    sources: sourceRows.map((row) => ({
-      source: row._id || "unknown",
-      steps: row.steps,
-      total: row.total,
-    })),
-    attribution,
+    sources: mergeSourceAnalytics(
+      sourceRows.map((row) => ({
+        source: row._id || "unknown",
+        steps: row.steps,
+        total: row.total,
+      })),
+    ),
+    attribution: normalizeAttributionSources(attribution),
   };
 }

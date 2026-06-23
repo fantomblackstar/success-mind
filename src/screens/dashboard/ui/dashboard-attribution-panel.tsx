@@ -8,8 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Badge } from "@/shared/ui";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, SectionTitle } from "@/shared/ui";
 import {
   ChartContainer,
   ChartTooltip,
@@ -79,7 +78,17 @@ export function DashboardAttributionPanel({
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="space-y-4">
+        <div>
+          <SectionTitle as="h2" className="text-left text-2xl md:text-3xl">
+            Registered users
+          </SectionTitle>
+          <p className="mt-2 text-sm text-zinc-400">
+            First and last touch source with timestamps
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {attribution.map((user, index) => (
           <motion.div
             key={user.email}
@@ -142,6 +151,7 @@ export function DashboardAttributionPanel({
             </Card>
           </motion.div>
         ))}
+        </div>
       </div>
     </div>
   );

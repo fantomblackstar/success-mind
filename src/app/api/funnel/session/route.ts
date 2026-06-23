@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     const referrer = request.headers.get("referer");
     const url = new URL(request.url);
-    const utm = parseUtmFromSearchParams(url.searchParams, referrer);
+    const utm = parseUtmFromSearchParams(url.searchParams, referrer, url.hostname);
     await setUtmCookie(utm);
 
     await funnelService.trackEvent({
