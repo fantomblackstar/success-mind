@@ -1,4 +1,4 @@
-import { SiteHeader } from "@/widgets/site-header/ui/site-header";
+import { SiteHeader } from "@/widgets/site-header";
 import {
   LandingCtaBand,
   LandingFeatures,
@@ -7,8 +7,8 @@ import {
   LandingHowItWorks,
   LandingSessionInit,
   LandingStats,
-} from "@/widgets/landing/ui/landing-sections";
-import { AuroraBackground } from "@/shared/ui/aceternity/primitives";
+} from "@/widgets/landing";
+import { AuroraBackground } from "@/shared/ui/aceternity";
 import { getUserSession } from "@/shared/lib/session";
 
 export async function LandingScreen() {

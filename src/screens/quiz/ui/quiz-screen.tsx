@@ -3,11 +3,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryState, parseAsInteger } from "nuqs";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui";
 import { QUIZ_QUESTIONS } from "@/shared/config/quiz";
-import { FunnelShell, OptionButton } from "@/widgets/funnel-shell/ui/funnel-shell";
+import { FunnelShell, OptionButton } from "@/widgets/funnel-shell";
 import { getQuizAnswers, setQuizAnswer } from "@/shared/lib/quiz-storage";
 import { trackEvent } from "@/shared/api/client";
+import { routes } from "@/shared/lib/routes";
 import { useState } from "react";
 
 export function QuizScreen() {
@@ -38,7 +39,7 @@ export function QuizScreen() {
 
     if (step >= 3) {
       trackEvent("quiz_complete");
-      router.push("/email");
+      router.push(routes.email);
       return;
     }
 

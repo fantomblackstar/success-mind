@@ -1,4 +1,4 @@
-import { SiteHeader } from "@/widgets/site-header/ui/site-header";
+import { SiteHeader } from "@/widgets/site-header";
 import { getUserSession } from "@/shared/lib/session";
 
 export default async function FunnelLayout({

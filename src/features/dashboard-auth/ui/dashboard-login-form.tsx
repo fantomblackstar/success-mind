@@ -3,14 +3,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/ui";
+import { Input } from "@/shared/ui";
+import { Label } from "@/shared/ui";
 import {
   dashboardLoginSchema,
   type DashboardLoginValues,
 } from "@/shared/lib/schemas";
 import { apiFetch } from "@/shared/api/client";
+import { routes } from "@/shared/lib/routes";
 
 export function DashboardLoginForm() {
   const router = useRouter();
@@ -21,11 +22,11 @@ export function DashboardLoginForm() {
 
   async function onSubmit(values: DashboardLoginValues) {
     try {
-      await apiFetch("/api/dashboard/login", {
+      await apiFetch(routes.api.dashboardLogin, {
         method: "POST",
         body: JSON.stringify(values),
       });
-      router.push("/dashboard");
+      router.push(routes.dashboard);
     } catch {
       form.setError("password", { message: "Invalid username or password" });
     }

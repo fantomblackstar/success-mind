@@ -1,4 +1,4 @@
-import { DashboardLoginScreen } from "@/screens/dashboard-login/ui/dashboard-login-screen";
+import { DashboardLoginScreen } from "@/screens/dashboard-login";
 
 export default function DashboardLoginPage() {
   return <DashboardLoginScreen />;

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clearUserSession } from "@/shared/lib/session";
+import { routes } from "@/shared/lib/routes";
 
 export async function POST() {
   await clearUserSession();
@@ -8,5 +9,5 @@ export async function POST() {
 
 export async function GET(request: NextRequest) {
   await clearUserSession();
-  return NextResponse.redirect(new URL("/", request.url));
+  return NextResponse.redirect(new URL(routes.home, request.url));
 }

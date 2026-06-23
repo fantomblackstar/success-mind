@@ -2,17 +2,18 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
-import { EmailForm } from "@/features/submit-email/ui/email-form";
+import { FunnelShell } from "@/widgets/funnel-shell";
+import { EmailForm } from "@/features/submit-email";
 import { isQuizComplete } from "@/shared/lib/quiz-storage";
 import { trackEvent } from "@/shared/api/client";
+import { routes } from "@/shared/lib/routes";
 
 export function EmailCaptureScreen() {
   const router = useRouter();
 
   useEffect(() => {
     if (!isQuizComplete()) {
-      router.replace("/quiz?step=1");
+      router.replace(routes.quiz(1));
       return;
     }
     trackEvent("email_capture");

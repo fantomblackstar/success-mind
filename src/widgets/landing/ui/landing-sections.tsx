@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { FEEDBACK_ITEMS } from "@/shared/config/feedback";
-import { GlowingCard } from "@/shared/ui/aceternity/primitives";
-import { cn } from "@/lib/utils";
+import { GlowingCard } from "@/shared/ui/aceternity";
+import { cn } from "@/shared/lib";
+import { routes } from "@/shared/lib/routes";
 
 export function LandingFeedbackGrid() {
   return (
@@ -19,7 +20,9 @@ export function LandingFeedbackGrid() {
             item.height === "short" && "min-h-[140px]",
           )}
         >
-          <p className="text-sm leading-relaxed text-zinc-300">&ldquo;{item.quote}&rdquo;</p>
+          <p className="text-sm leading-relaxed text-zinc-300">
+            &ldquo;{item.quote}&rdquo;
+          </p>
           <div className="mt-4">
             <p className="font-medium text-white">{item.name}</p>
             <p className="text-xs text-purple-300">{item.role}</p>
@@ -37,14 +40,16 @@ export function LandingHero() {
         AI co-founder for CEOs and founders
       </p>
       <h1 className="mx-auto max-w-4xl text-4xl font-bold leading-tight text-white sm:text-6xl">
-        Build success <span className="text-purple-400">3x faster</span> with an AI trained on 100+ top founders
+        Build success <span className="text-purple-400">3x faster</span> with an
+        AI trained on 100+ top founders
       </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
-        Success Mind helps you make better business choices every day. Simple advice. Strong results.
+        Success Mind helps you make better business choices every day. Simple
+        advice. Strong results.
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
         <Link
-          href="/quiz?step=1"
+          href={routes.quiz(1)}
           className="rounded-full bg-purple-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-purple-500"
         >
           Start Your Success Journey
@@ -94,7 +99,9 @@ export function LandingFeatures() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
-      <h2 className="text-center text-3xl font-semibold text-white">Why leaders choose Success Mind</h2>
+      <h2 className="text-center text-3xl font-semibold text-white">
+        Why leaders choose Success Mind
+      </h2>
       <div className="mt-10 grid gap-4 md:grid-cols-3">
         {items.map((item) => (
           <GlowingCard key={item.title}>
@@ -116,10 +123,15 @@ export function LandingHowItWorks() {
 
   return (
     <section className="mx-auto max-w-4xl px-4 py-12">
-      <h2 className="text-center text-2xl font-semibold text-white">How it works</h2>
+      <h2 className="text-center text-2xl font-semibold text-white">
+        How it works
+      </h2>
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {steps.map((step, index) => (
-          <div key={step} className="rounded-xl border border-white/10 p-4 text-center">
+          <div
+            key={step}
+            className="rounded-xl border border-white/10 p-4 text-center"
+          >
             <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-purple-600/20 text-purple-300">
               {index + 1}
             </div>
@@ -136,9 +148,11 @@ export function LandingCtaBand() {
     <section className="mx-auto max-w-4xl px-4 py-16">
       <div className="rounded-3xl border border-purple-500/20 bg-gradient-to-r from-purple-950 to-zinc-900 p-10 text-center">
         <h2 className="text-3xl font-semibold text-white">Ready to grow?</h2>
-        <p className="mt-3 text-zinc-400">Join founders who use AI to move faster.</p>
+        <p className="mt-3 text-zinc-400">
+          Join founders who use AI to move faster.
+        </p>
         <Link
-          href="/quiz?step=1"
+          href={routes.quiz(1)}
           className="mt-8 inline-flex rounded-full bg-purple-600 px-8 py-3 text-sm font-medium text-white hover:bg-purple-500"
         >
           Get Early Access
@@ -150,8 +164,8 @@ export function LandingCtaBand() {
 
 export function LandingSessionInit() {
   useEffect(() => {
-    fetch("/api/funnel/session", { method: "POST" }).catch(console.error);
-    fetch("/api/funnel/events", {
+    fetch(routes.api.funnelSession, { method: "POST" }).catch(console.error);
+    fetch(routes.api.funnelEvents, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ step: "landing_view" }),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
 import {
   Table,
   TableBody,
@@ -9,8 +9,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/shared/ui";
 import { apiFetch } from "@/shared/api/client";
+import { routes } from "@/shared/lib/routes";
 
 type Overview = {
   entered: number;
@@ -44,9 +45,9 @@ export function DashboardScreen() {
 
   useEffect(() => {
     Promise.all([
-      apiFetch<Overview>("/api/analytics/overview"),
-      apiFetch<Conversion[]>("/api/analytics/conversions"),
-      apiFetch<Attribution[]>("/api/analytics/attribution"),
+      apiFetch<Overview>(routes.api.analyticsOverview),
+      apiFetch<Conversion[]>(routes.api.analyticsConversions),
+      apiFetch<Attribution[]>(routes.api.analyticsAttribution),
     ])
       .then(([overviewData, conversionData, attributionData]) => {
         setOverview(overviewData);

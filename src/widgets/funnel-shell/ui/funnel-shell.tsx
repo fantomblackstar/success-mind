@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib";
 
 export function FunnelShell({
   title,
@@ -19,7 +19,9 @@ export function FunnelShell({
         </p>
       ) : null}
       <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-8 shadow-2xl shadow-purple-950/20">
-        <h1 className="text-center text-2xl font-semibold text-white">{title}</h1>
+        <h1 className="text-center text-2xl font-semibold text-white">
+          {title}
+        </h1>
         {subtitle ? (
           <p className="mt-2 text-center text-sm text-zinc-400">{subtitle}</p>
         ) : null}

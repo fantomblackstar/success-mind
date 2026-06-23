@@ -2,10 +2,11 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LinkButton } from "@/shared/ui/link-button";
-import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
+import { LinkButton } from "@/shared/ui";
+import { FunnelShell } from "@/widgets/funnel-shell";
 import { EARLY_ACCESS_MESSAGE } from "@/shared/config/early-access";
 import { trackEvent } from "@/shared/api/client";
+import { routes } from "@/shared/lib/routes";
 
 export function EarlyAccessScreen({
   name,
@@ -28,7 +29,7 @@ export function EarlyAccessScreen({
         <p className="text-sm text-zinc-400">
           {EARLY_ACCESS_MESSAGE.footer} <span className="text-zinc-200">{email}</span>
         </p>
-        <LinkButton href="/" className="w-full bg-purple-600 hover:bg-purple-500">
+        <LinkButton href={routes.home} className="w-full bg-purple-600 hover:bg-purple-500">
           Back to home
         </LinkButton>
       </div>
@@ -47,7 +48,7 @@ export function EarlyAccessGuard({
 
   useEffect(() => {
     if (!name || !email) {
-      router.replace("/login");
+      router.replace(routes.login);
     }
   }, [name, email, router]);
 

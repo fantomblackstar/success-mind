@@ -1,5 +1,5 @@
-import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
-import { DashboardLoginForm } from "@/features/dashboard-auth/ui/dashboard-login-form";
+import { FunnelShell } from "@/widgets/funnel-shell";
+import { DashboardLoginForm } from "@/features/dashboard-auth";
 
 export function DashboardLoginScreen() {
   return (

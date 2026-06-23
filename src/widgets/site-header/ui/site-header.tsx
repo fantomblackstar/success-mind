@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { LinkButton } from "@/shared/ui/link-button";
+import { Button, LinkButton } from "@/shared/ui";
 import type { UserSessionPayload } from "@/shared/lib/session";
+import { routes } from "@/shared/lib/routes";
 
 function SuccessMindLogo() {
   return (
-    <Link href="/" className="flex items-center gap-2 font-semibold text-foreground">
+    <Link href={routes.home} className="flex items-center gap-2 font-semibold text-foreground">
       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-violet-400 text-sm text-white">
         S
       </span>
@@ -23,19 +23,19 @@ export function SiteHeader({ user }: { user: UserSessionPayload | null }) {
           {user ? (
             <>
               <span className="hidden text-sm text-zinc-400 sm:inline">Hi, {user.name}</span>
-              <form action="/api/funnel/logout" method="GET">
+              <form action={routes.api.funnelLogout} method="GET">
                 <Button variant="ghost" size="sm" type="submit">
                   Logout
                 </Button>
               </form>
             </>
           ) : (
-            <LinkButton href="/login" variant="ghost" size="sm">
+            <LinkButton href={routes.login} variant="ghost" size="sm">
               Login
             </LinkButton>
           )}
           <LinkButton
-            href="/quiz?step=1"
+            href={routes.quiz(1)}
             size="sm"
             className="bg-purple-600 hover:bg-purple-500"
           >

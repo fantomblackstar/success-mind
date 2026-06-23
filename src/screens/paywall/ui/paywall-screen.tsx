@@ -2,13 +2,14 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { LinkButton } from "@/shared/ui/link-button";
+import { Badge } from "@/shared/ui";
+import { Button } from "@/shared/ui";
+import { LinkButton } from "@/shared/ui";
 import { PRICING_TIERS } from "@/shared/config/pricing";
-import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
+import { FunnelShell } from "@/widgets/funnel-shell";
 import { apiFetch, trackEvent } from "@/shared/api/client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib";
+import { routes } from "@/shared/lib/routes";
 
 export function PaywallScreen() {
   const router = useRouter();
@@ -18,16 +19,19 @@ export function PaywallScreen() {
   }, []);
 
   async function handleBuy(tier: "starter" | "pro") {
-    await apiFetch("/api/funnel/buy", {
+    await apiFetch(routes.api.funnelBuy, {
       method: "POST",
       body: JSON.stringify({ tier }),
     });
     sessionStorage.setItem("success_mind_buy", "1");
-    router.push("/success");
+    router.push(routes.success);
   }
 
   return (
-    <FunnelShell title="Choose your plan" subtitle="Pick the plan that fits your goals">
+    <FunnelShell
+      title="Choose your plan"
+      subtitle="Pick the plan that fits your goals"
+    >
       <div className="grid gap-4 sm:grid-cols-2">
         {PRICING_TIERS.map((tier) => (
           <div
@@ -43,7 +47,9 @@ export function PaywallScreen() {
               <Badge className="mb-3 bg-purple-600">Recommended</Badge>
             ) : null}
             <h3 className="text-lg font-semibold text-white">{tier.name}</h3>
-            <p className="mt-1 text-2xl font-bold text-purple-300">${tier.price}/mo</p>
+            <p className="mt-1 text-2xl font-bold text-purple-300">
+              ${tier.price}/mo
+            </p>
             <ul className="mt-4 space-y-2 text-sm text-zinc-400">
               {tier.features.map((feature) => (
                 <li key={feature}>• {feature}</li>
@@ -58,7 +64,7 @@ export function PaywallScreen() {
           </div>
         ))}
       </div>
-      <LinkButton href="/" variant="link" className="mt-4 w-full text-zinc-400">
+      <LinkButton href={routes.home} variant="link" className="mt-4 w-full text-zinc-400">
         Back to home
       </LinkButton>
     </FunnelShell>

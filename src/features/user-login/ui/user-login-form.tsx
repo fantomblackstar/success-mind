@@ -3,11 +3,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/ui";
+import { Input } from "@/shared/ui";
+import { Label } from "@/shared/ui";
 import { loginFormSchema, type LoginFormValues } from "@/shared/lib/schemas";
 import { apiFetch } from "@/shared/api/client";
+import { routes } from "@/shared/lib/routes";
 
 export function UserLoginForm() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export function UserLoginForm() {
 
   async function onSubmit(values: LoginFormValues) {
     try {
-      const result = await apiFetch<{ found: boolean }>("/api/funnel/login", {
+      const result = await apiFetch<{ found: boolean }>(routes.api.funnelLogin, {
         method: "POST",
         body: JSON.stringify(values),
       });
@@ -30,7 +31,7 @@ export function UserLoginForm() {
         return;
       }
 
-      router.push("/early-access");
+      router.push(routes.earlyAccess);
     } catch {
       form.setError("email", {
         message: "No account yet. Click Get Early Access to start.",

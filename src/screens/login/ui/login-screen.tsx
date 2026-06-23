@@ -1,17 +1,18 @@
 import { redirect } from "next/navigation";
-import { FunnelShell } from "@/widgets/funnel-shell/ui/funnel-shell";
-import { UserLoginForm } from "@/features/user-login/ui/user-login-form";
-import { LinkButton } from "@/shared/ui/link-button";
+import { FunnelShell } from "@/widgets/funnel-shell";
+import { UserLoginForm } from "@/features/user-login";
+import { LinkButton } from "@/shared/ui";
 import { getUserSession } from "@/shared/lib/session";
+import { routes } from "@/shared/lib/routes";
 
 export async function LoginScreen() {
   const user = await getUserSession();
-  if (user) redirect("/early-access");
+  if (user) redirect(routes.earlyAccess);
 
   return (
     <FunnelShell title="Welcome back" subtitle="Enter your email to continue">
       <UserLoginForm />
-      <LinkButton href="/quiz?step=1" variant="link" className="mt-4 w-full text-purple-300">
+      <LinkButton href={routes.quiz(1)} variant="link" className="mt-4 w-full text-purple-300">
         New here? Get Early Access
       </LinkButton>
     </FunnelShell>

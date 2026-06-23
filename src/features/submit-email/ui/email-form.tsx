@@ -3,15 +3,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/ui";
+import { Input } from "@/shared/ui";
+import { Label } from "@/shared/ui";
 import {
   emailFormSchema,
   type EmailFormValues,
 } from "@/shared/lib/schemas";
 import { apiFetch } from "@/shared/api/client";
 import { getQuizAnswers } from "@/shared/lib/quiz-storage";
+import { routes } from "@/shared/lib/routes";
 
 export function EmailForm() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export function EmailForm() {
 
   async function onSubmit(values: EmailFormValues) {
     try {
-      const result = await apiFetch<{ isReturning: boolean }>("/api/funnel/email", {
+      const result = await apiFetch<{ isReturning: boolean }>(routes.api.funnelEmail, {
         method: "POST",
         body: JSON.stringify({
           ...values,
@@ -31,9 +32,9 @@ export function EmailForm() {
       });
 
       if (result.isReturning) {
-        router.push("/early-access");
+        router.push(routes.earlyAccess);
       } else {
-        router.push("/paywall");
+        router.push(routes.paywall);
       }
     } catch (error) {
       form.setError("email", {

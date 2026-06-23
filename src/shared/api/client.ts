@@ -1,3 +1,5 @@
+import { routes } from "@/shared/lib/routes";
+
 export async function apiFetch<T>(
   url: string,
   options?: RequestInit,
@@ -15,14 +17,14 @@ export async function apiFetch<T>(
 }
 
 export function trackEvent(step: string, metadata?: Record<string, unknown>) {
-  return apiFetch("/api/funnel/events", {
+  return apiFetch(routes.api.funnelEvents, {
     method: "POST",
     body: JSON.stringify({ step, metadata }),
   }).catch(console.error);
 }
 
 export function initSession(search = "") {
-  return apiFetch<{ sessionId: string }>(`/api/funnel/session${search}`, {
+  return apiFetch<{ sessionId: string }>(`${routes.api.funnelSession}${search}`, {
     method: "POST",
   });
 }
