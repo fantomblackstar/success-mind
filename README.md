@@ -1,113 +1,92 @@
 # Success Mind MVP
 
-Marketing funnel + analytics dashboard for **Success Mind** — an AI co-founder assistant for CEOs and founders.
+A marketing funnel and admin analytics dashboard for **Success Mind** — an AI mentor for founders.
 
-## Live links
+**What it does:** landing page → quiz → email capture → paywall → early access, with UTM tracking and a `/dashboard` view of funnel performance and user attribution.
 
-| Service | URL |
-|---------|-----|
-| Funnel | `https://success-mind-ai.vercel.app/` |
-| Dashboard | `https://success-mind-ai.vercel.app/dashboard` |
+## Run locally
 
-## Quick start
+**Prerequisites:** Node.js 20+, pnpm, MongoDB (Atlas or local).
 
-```bash
-pnpm install
-cp .env.example .env.local
-# Fill in MONGODB_URI, DASHBOARD_USER, DASHBOARD_PASSWORD, SESSION_SECRET
-pnpm dev
-```
+1. **Clone and install**
+   ```bash
+   git clone <repo-url>
+   cd success-mind-mvp
+   pnpm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000).
+2. **Configure environment**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Set these in `.env.local`:
 
-### Seed demo data
+   | Variable | Description |
+   |----------|-------------|
+   | `MONGODB_URI` | MongoDB connection string |
+   | `DASHBOARD_USER` | Admin dashboard username |
+   | `DASHBOARD_PASSWORD` | Admin dashboard password |
+   | `SESSION_SECRET` | Secret for signing session JWTs |
 
-```bash
-pnpm seed
-```
+3. **Start the app**
+   ```bash
+   pnpm dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000).
 
-Populates sample users and funnel events for the dashboard.
+4. **Seed demo data** (optional, for dashboard charts)
+   ```bash
+   pnpm seed
+   ```
+   Creates sample users, funnel events, and attribution data. Requires `MONGODB_URI` in `.env` (the seed script reads `.env`, not `.env.local` — copy the same values or symlink).
 
-## Environment variables
-
-| Variable | Description |
-|----------|-------------|
-| `MONGODB_URI` | MongoDB Atlas connection string |
-| `DASHBOARD_USER` | Admin dashboard username |
-| `DASHBOARD_PASSWORD` | Admin dashboard password |
-| `SESSION_SECRET` | Secret for signing session JWTs |
-
-## MongoDB Atlas setup
-
-1. Create a free account at [mongodb.com/atlas](https://www.mongodb.com/atlas)
-2. Create a **M0 free cluster**
-3. Database Access → Add user (username + password)
-4. Network Access → Add IP `0.0.0.0/0` (MVP) or your Vercel IPs
-5. Connect → Drivers → copy connection string
-6. Replace `<password>` and set database name, e.g. `success-mind`
-7. Paste into `MONGODB_URI` in `.env.local` and Vercel
+5. **Sign in to the dashboard**
+   - URL: [http://localhost:3000/dashboard/login](http://localhost:3000/dashboard/login)
+   - Credentials: `DASHBOARD_USER` / `DASHBOARD_PASSWORD` from `.env.local`
 
 ## Funnel flow
 
-1. **Landing** `/` — marketing page, hero + bottom CTAs
-2. **Quiz** `/quiz?step=1..3` — 3 multiple-choice questions (nuqs)
-3. **Email** `/email` — name + email (zod + react-hook-form)
-4. **Paywall** `/paywall` — new users, two pricing tiers
-5. **Early access** `/early-access` — returning users (July 1, 2026 message)
-6. **Success** `/success` — after mock purchase
-
-**Header Login** `/login` — returning users sign in with email only.
-
-## Test scenarios
-
-### New user
-
-```
-http://localhost:3000/?utm_source=google
-→ Get Early Access → quiz (3 steps) → email + name → paywall → Buy Pro → success
-```
-
-### Returning user (email step)
-
-```
-http://localhost:3000/?utm_source=facebook
-→ quiz → same email as before → /early-access
-```
-
-Check dashboard: **first touch** = google, **last touch** = facebook.
-
-### Returning user (header login)
-
-```
-/login → enter existing email → /early-access
-```
-
-## Dashboard
-
-- URL: `/dashboard/login`
-- Credentials: set via `DASHBOARD_USER` / `DASHBOARD_PASSWORD` in env
-- Metrics: overview, step conversions, by-source, first/last touch attribution
+| Step | Route | Notes |
+|------|-------|-------|
+| Landing | `/` | Marketing page |
+| Quiz | `/quiz?step=1..2` | Two questions |
+| Email | `/email` | Name + email |
+| Paywall | `/paywall` | New users |
+| Early access | `/early-access` | Returning users |
+| Login | `/login` | Email-only sign-in |
 
 ## Architecture
 
-- **Next.js 16** App Router, single deployment
-- **FSD frontend**: `screens/`, `widgets/`, `features/`, `entities/`, `shared/`
-- **Server modules**: root `server/` (Mongoose, Nest-inspired services)
-- **API**: thin `app/api/*` route handlers
-- **UI**: shadcn/ui + Aceternity-style effects on landing
-- **File naming**: kebab-case for all source files
+This repo runs as a **single Next.js process** — one `pnpm dev` / one Vercel deployment handles UI, API routes, and server logic. There is no separate Express or Nest server.
 
-## Key trade-offs
+**Why Next.js-only?**
 
-1. Email-only user identity (no password) — fast MVP, sufficient for funnel test
-2. Event-sourcing lite — append-only `funnel_events` for analytics
-3. Single app, two URLs (funnel + dashboard) — fastest deploy path
-4. Aceternity effects on landing only — keeps funnel/dashboard lean
-5. Fictional testimonials — mock marketing data for demo
+- **One deploy, one runtime** — funnel and dashboard share auth, env, and DB connection; no CORS or service wiring for an MVP.
+- **Colocated API** — `app/api/*` route handlers call shared `server/` modules directly (no HTTP hop between services).
+- **Fast iteration** — fewer moving parts; ideal for validating funnel conversion before splitting into microservices.
 
-## Deploy (Vercel)
+**How code is organized**
 
-1. Push to GitHub (public repo)
-2. Import project as `success-mind-ai`
-3. Set all env vars from `.env.example`
-4. Deploy
+```
+src/          Frontend (Feature-Sliced Design)
+  screens/    Full pages (landing, quiz, dashboard, …)
+  widgets/    Reusable layout blocks (header, funnel shell)
+  features/   User actions (login form, dashboard auth)
+  shared/     UI kit, lib, config, API client
+
+server/       Backend logic (imported by API routes, not a standalone server)
+  database/   Mongoose models + connection
+  modules/    Services (funnel, users, analytics)
+
+app/          Next.js App Router — pages + API routes
+```
+
+**Other decisions (brief)**
+
+| Choice | Why |
+|--------|-----|
+| FSD in `src/` | Clear boundaries between screens, widgets, and shared UI as the app grows |
+| `server/` modules | Business logic stays testable and separate from thin route handlers |
+| Append-only `funnel_events` | Simple analytics without a dedicated event pipeline |
+| Email-only identity | No passwords in MVP; enough to test returning-user flows |
+| JWT in httpOnly cookies | User session 30 days; admin session 1 day |
