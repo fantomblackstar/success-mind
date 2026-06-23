@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { LinkButton } from "@/shared/ui";
 import { FunnelShell } from "@/widgets/funnel-shell";
 import { EARLY_ACCESS_MESSAGE } from "@/shared/config/early-access";
@@ -35,23 +34,4 @@ export function EarlyAccessScreen({
       </div>
     </FunnelShell>
   );
-}
-
-export function EarlyAccessGuard({
-  name,
-  email,
-}: {
-  name?: string;
-  email?: string;
-}) {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!name || !email) {
-      router.replace(routes.login);
-    }
-  }, [name, email, router]);
-
-  if (!name || !email) return null;
-  return <EarlyAccessScreen name={name} email={email} />;
 }

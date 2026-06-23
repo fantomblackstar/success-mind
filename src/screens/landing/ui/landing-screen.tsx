@@ -1,15 +1,12 @@
 import { SiteHeader } from "@/widgets/site-header";
-import { SectionTitle } from "@/shared/ui";
-import {
-  LandingCommunityGlobe,
-  LandingCtaBand,
-  LandingFeedbackGrid,
-  LandingHero,
-  LandingHowItWorks,
-  LandingSessionInit,
-  LandingStats,
-} from "@/widgets/landing";
 import { getUserSession } from "@/shared/lib/session";
+import { LandingCommunityGlobe } from "./landing-community-globe";
+import { LandingCtaBand } from "./landing-cta-band";
+import { LandingHero } from "./landing-hero";
+import { LandingHowItWorks } from "./landing-how-it-works";
+import { LandingSessionInit } from "./landing-session-init";
+import { LandingStats } from "./landing-stats";
+import { LandingTestimonialsSection } from "./landing-testimonials-section";
 
 export async function LandingScreen() {
   const user = await getUserSession();
@@ -23,10 +20,7 @@ export async function LandingScreen() {
         <LandingStats />
         <LandingHowItWorks />
         <LandingCommunityGlobe />
-        <section className="mx-auto max-w-6xl px-4 py-16">
-          <SectionTitle className="mb-10 text-4xl md:text-5xl">What CEOs say</SectionTitle>
-          <LandingFeedbackGrid />
-        </section>
+        <LandingTestimonialsSection />
         <LandingCtaBand />
       </main>
     </div>
