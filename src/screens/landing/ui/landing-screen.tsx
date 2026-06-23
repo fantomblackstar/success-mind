@@ -1,14 +1,14 @@
 import { SiteHeader } from "@/widgets/site-header";
+import { SectionTitle } from "@/shared/ui";
 import {
+  LandingCommunityGlobe,
   LandingCtaBand,
-  LandingFeatures,
   LandingFeedbackGrid,
   LandingHero,
   LandingHowItWorks,
   LandingSessionInit,
   LandingStats,
 } from "@/widgets/landing";
-import { AuroraBackground } from "@/shared/ui/aceternity";
 import { getUserSession } from "@/shared/lib/session";
 
 export async function LandingScreen() {
@@ -18,19 +18,17 @@ export async function LandingScreen() {
     <div className="min-h-screen bg-zinc-950 text-white">
       <SiteHeader user={user} />
       <LandingSessionInit />
-      <AuroraBackground>
-        <main>
-          <LandingHero />
-          <LandingStats />
-          <LandingHowItWorks />
-          <LandingFeatures />
-          <section className="mx-auto max-w-6xl px-4 py-16">
-            <h2 className="mb-8 text-center text-3xl font-semibold">What founders say</h2>
-            <LandingFeedbackGrid />
-          </section>
-          <LandingCtaBand />
-        </main>
-      </AuroraBackground>
+      <main>
+        <LandingHero />
+        <LandingStats />
+        <LandingHowItWorks />
+        <LandingCommunityGlobe />
+        <section className="mx-auto max-w-6xl px-4 py-16">
+          <SectionTitle className="mb-10 text-4xl md:text-5xl">What CEOs say</SectionTitle>
+          <LandingFeedbackGrid />
+        </section>
+        <LandingCtaBand />
+      </main>
     </div>
   );
 }

@@ -1,9 +1,13 @@
+import { redirect } from "next/navigation";
 import { DashboardScreen } from "@/screens/dashboard";
+import { isDashboardAuthenticated } from "@/shared/lib/session";
+import { routes } from "@/shared/lib/routes";
 
-export default function DashboardPage() {
-  return (
-    <div className="min-h-screen bg-zinc-950">
-      <DashboardScreen />
-    </div>
-  );
+export default async function DashboardPage() {
+  const isAdmin = await isDashboardAuthenticated();
+  if (!isAdmin) {
+    redirect(routes.dashboardLogin);
+  }
+
+  return <DashboardScreen />;
 }

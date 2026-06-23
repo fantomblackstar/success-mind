@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
+import { Button } from "@/shared/ui";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
 import {
   Table,
@@ -39,6 +42,7 @@ type Attribution = {
 };
 
 export function DashboardScreen() {
+  const router = useRouter();
   const [overview, setOverview] = useState<Overview | null>(null);
   const [conversions, setConversions] = useState<Conversion[]>([]);
   const [attribution, setAttribution] = useState<Attribution[]>([]);
@@ -54,8 +58,11 @@ export function DashboardScreen() {
         setConversions(conversionData);
         setAttribution(attributionData);
       })
-      .catch(console.error);
-  }, []);
+      .catch((error) => {
+        console.error(error);
+        router.replace(routes.dashboardLogin);
+      });
+  }, [router]);
 
   const cards = overview
     ? [
@@ -71,14 +78,21 @@ export function DashboardScreen() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-10">
-      <div>
-        <h1 className="text-3xl font-semibold text-white">Analytics Dashboard</h1>
-        <p className="mt-2 text-zinc-400">Funnel performance and attribution overview</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold text-white">Analytics Dashboard</h1>
+          <p className="mt-2 text-zinc-400">Funnel performance and attribution overview</p>
+        </div>
+        <form action={routes.api.dashboardLogout} method="GET">
+          <Button variant="outline" size="icon" type="submit" aria-label="Admin logout">
+            <LogOut className="size-5" />
+          </Button>
+        </form>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
-          <Card key={card.label} className="border-white/10 bg-zinc-900/80">
+          <Card key={card.label} className="bg-zinc-900/80">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-zinc-400">{card.label}</CardTitle>
             </CardHeader>
@@ -89,7 +103,7 @@ export function DashboardScreen() {
         ))}
       </div>
 
-      <Card className="border-white/10 bg-zinc-900/80">
+      <Card className="bg-zinc-900/80">
         <CardHeader>
           <CardTitle className="text-white">Step conversions</CardTitle>
         </CardHeader>
@@ -117,7 +131,7 @@ export function DashboardScreen() {
         </CardContent>
       </Card>
 
-      <Card className="border-white/10 bg-zinc-900/80">
+      <Card className="bg-zinc-900/80">
         <CardHeader>
           <CardTitle className="text-white">First touch / Last touch attribution</CardTitle>
         </CardHeader>

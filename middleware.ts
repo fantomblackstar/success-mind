@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+import { COOKIE_NAMES } from "@/shared/lib/cookie-names";
+import { verifyAdminToken } from "@/shared/lib/jwt";
 import { routes } from "@/shared/lib/routes";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (
-    pathname.startsWith(routes.dashboard) &&
-    !pathname.startsWith(routes.dashboardLogin)
-  ) {
-    const token = request.cookies.get("dashboard_auth")?.value;
-    if (!token) {
+  if (pathname === routes.dashboard || pathname.startsWith(`${routes.dashboard}/`)) {
+    if (pathname.startsWith(routes.dashboardLogin)) {
+      return NextResponse.next();
+    }
+
+    const token = request.cookies.get(COOKIE_NAMES.adminSession)?.value;
+    const adminSession = token ? await verifyAdminToken(token) : null;
+
+    if (!adminSession) {
       return NextResponse.redirect(new URL(routes.dashboardLogin, request.url));
     }
   }
@@ -18,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard", "/dashboard/:path*"],
 };

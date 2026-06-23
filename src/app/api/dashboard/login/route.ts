@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { dashboardLoginSchema } from "@/shared/lib/schemas";
 import { apiError, apiSuccess } from "@/shared/lib/api-response";
-import { setDashboardAuth } from "@/shared/lib/session";
+import { setAdminSession } from "@/shared/lib/session";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       return apiSuccess({ error: "Invalid credentials" }, 401);
     }
 
-    await setDashboardAuth();
+    await setAdminSession();
     return apiSuccess({ ok: true });
   } catch (error) {
     return apiError(error);

@@ -22,7 +22,7 @@ export function EmailCaptureScreen() {
   return (
     <FunnelShell
       title="Almost there"
-      subtitle="Tell us your name and email to continue"
+      subtitle="Name and email to continue"
       step="Step 4 of 4"
     >
       <EmailForm />

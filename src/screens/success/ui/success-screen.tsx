@@ -6,7 +6,7 @@ import { routes } from "@/shared/lib/routes";
 
 export function SuccessScreen() {
   return (
-    <FunnelShell title="Thank you!" subtitle="Your plan is ready. We are happy to help you grow.">
+    <FunnelShell title="Thank you!" subtitle="You're all set.">
       <LinkButton href={routes.home} className="w-full bg-purple-600 hover:bg-purple-500">
         Back to home
       </LinkButton>

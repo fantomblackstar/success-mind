@@ -2,19 +2,7 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/shared/lib";
-
-export function AuroraBackground({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-1/4 top-0 h-96 w-96 rounded-full bg-purple-600/30 blur-[100px]" />
-        <div className="absolute right-0 top-20 h-80 w-80 rounded-full bg-violet-500/20 blur-[100px]" />
-        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-fuchsia-500/10 blur-[100px]" />
-      </div>
-      {children}
-    </div>
-  );
-}
+import { cardHoverBorder } from "@/shared/lib/card-styles";
 
 export function TextGenerateEffect({ words }: { words: string }) {
   const tokens = words.split(" ");
@@ -66,7 +54,8 @@ export function GlowingCard({
   return (
     <div
       className={cn(
-        "group relative rounded-2xl border border-white/10 bg-zinc-900/70 p-5 transition hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]",
+        cardHoverBorder,
+        "group relative rounded-lg bg-zinc-900/70 p-7 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]",
         className,
       )}
     >
@@ -78,7 +67,7 @@ export function GlowingCard({
 
 export function SpotlightSection({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-r from-purple-950/80 via-zinc-900 to-purple-950/80 p-10">
+    <div className="relative overflow-hidden rounded-3xl border border-purple-500/20 bg-gradient-to-r from-purple-950/80 via-zinc-900 to-purple-950/80 p-10 transition-colors duration-200 hover:border-primary">
       <div className="pointer-events-none absolute -left-20 top-0 h-40 w-40 rounded-full bg-purple-500/30 blur-3xl" />
       <div className="pointer-events-none absolute -right-10 bottom-0 h-40 w-40 rounded-full bg-violet-400/20 blur-3xl" />
       <div className="relative">{children}</div>

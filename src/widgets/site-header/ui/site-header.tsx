@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 import { Button, LinkButton } from "@/shared/ui";
 import type { UserSessionPayload } from "@/shared/lib/session";
 import { routes } from "@/shared/lib/routes";
 
 function SuccessMindLogo() {
   return (
-    <Link href={routes.home} className="flex items-center gap-2 font-semibold text-foreground">
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-violet-400 text-sm text-white">
+    <Link href={routes.home} className="flex items-center gap-2 text-lg font-semibold text-foreground">
+      <span className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-to-br from-purple-500 to-violet-400 text-base text-white">
         S
       </span>
       Success Mind
@@ -22,25 +23,29 @@ export function SiteHeader({ user }: { user: UserSessionPayload | null }) {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <span className="hidden text-sm text-zinc-400 sm:inline">Hi, {user.name}</span>
+              <span className="hidden text-base text-zinc-400 sm:inline">Hi, {user.name}</span>
+              <LinkButton href={routes.earlyAccess} variant="outline" size="default">
+                Early Access
+              </LinkButton>
               <form action={routes.api.funnelLogout} method="GET">
-                <Button variant="ghost" size="sm" type="submit">
-                  Logout
+                <Button variant="ghost" size="icon" type="submit" aria-label="Logout">
+                  <LogOut className="size-5" />
                 </Button>
               </form>
             </>
           ) : (
-            <LinkButton href={routes.login} variant="ghost" size="sm">
+            <LinkButton href={routes.login} variant="ghost">
               Login
             </LinkButton>
           )}
-          <LinkButton
-            href={routes.quiz(1)}
-            size="sm"
-            className="bg-purple-600 hover:bg-purple-500"
-          >
-            Get Early Access
-          </LinkButton>
+          {!user ? (
+            <LinkButton
+              href={routes.quiz(1)}
+              className="bg-purple-600 hover:bg-purple-500"
+            >
+              Get early access
+            </LinkButton>
+          ) : null}
         </div>
       </div>
     </header>

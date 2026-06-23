@@ -10,10 +10,10 @@ export async function LoginScreen() {
   if (user) redirect(routes.earlyAccess);
 
   return (
-    <FunnelShell title="Welcome back" subtitle="Enter your email to continue">
+    <FunnelShell title="Welcome back" subtitle="Sign in with email">
       <UserLoginForm />
       <LinkButton href={routes.quiz(1)} variant="link" className="mt-4 w-full text-purple-300">
-        New here? Get Early Access
+        New here? Join waitlist
       </LinkButton>
     </FunnelShell>
   );

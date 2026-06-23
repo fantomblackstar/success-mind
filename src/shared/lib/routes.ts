@@ -16,6 +16,7 @@ export const routes = {
     funnelLogout: "/api/funnel/logout",
     funnelBuy: "/api/funnel/buy",
     dashboardLogin: "/api/dashboard/login",
+    dashboardLogout: "/api/dashboard/logout",
     analyticsOverview: "/api/analytics/overview",
     analyticsConversions: "/api/analytics/conversions",
     analyticsBySource: "/api/analytics/by-source",

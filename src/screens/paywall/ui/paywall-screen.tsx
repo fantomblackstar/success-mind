@@ -8,7 +8,7 @@ import { LinkButton } from "@/shared/ui";
 import { PRICING_TIERS } from "@/shared/config/pricing";
 import { FunnelShell } from "@/widgets/funnel-shell";
 import { apiFetch, trackEvent } from "@/shared/api/client";
-import { cn } from "@/shared/lib";
+import { cn, cardHoverBorder } from "@/shared/lib";
 import { routes } from "@/shared/lib/routes";
 
 export function PaywallScreen() {
@@ -23,40 +23,48 @@ export function PaywallScreen() {
       method: "POST",
       body: JSON.stringify({ tier }),
     });
-    sessionStorage.setItem("success_mind_buy", "1");
-    router.push(routes.success);
+    router.push(routes.earlyAccess);
   }
 
   return (
     <FunnelShell
-      title="Choose your plan"
-      subtitle="Pick the plan that fits your goals"
+      wide
+      title="Pick a plan"
     >
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         {PRICING_TIERS.map((tier) => (
           <div
             key={tier.id}
             className={cn(
-              "rounded-xl border p-4",
+              "flex flex-col rounded-lg border p-8 transition-colors duration-200",
               tier.recommended
-                ? "border-purple-500 bg-purple-500/10"
-                : "border-white/10 bg-zinc-950/40",
+                ? "border-purple-500 bg-purple-500/10 hover:border-primary"
+                : cn(cardHoverBorder, "bg-zinc-950/40"),
             )}
           >
-            {tier.recommended ? (
-              <Badge className="mb-3 bg-purple-600">Recommended</Badge>
-            ) : null}
-            <h3 className="text-lg font-semibold text-white">{tier.name}</h3>
-            <p className="mt-1 text-2xl font-bold text-purple-300">
-              ${tier.price}/mo
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              {tier.recommended ? (
+                <Badge className="bg-purple-600 text-sm">Recommended</Badge>
+              ) : null}
+              {"promoLabel" in tier && tier.promoLabel ? (
+                <Badge variant="secondary" className="border border-purple-400/40 bg-purple-500/20 text-sm text-purple-100">
+                  {tier.promoLabel}
+                </Badge>
+              ) : null}
+            </div>
+            <h3 className="text-2xl font-semibold text-white">{tier.name}</h3>
+            <p className="mt-2 text-4xl font-bold text-purple-300">
+              ${tier.price}
+              <span className="text-lg font-medium text-zinc-400">/mo</span>
             </p>
-            <ul className="mt-4 space-y-2 text-sm text-zinc-400">
+            <ul className="mt-6 flex-1 space-y-3 text-base text-zinc-300">
               {tier.features.map((feature) => (
                 <li key={feature}>• {feature}</li>
               ))}
             </ul>
             <Button
-              className="mt-6 w-full bg-purple-600 hover:bg-purple-500"
+              size="lg"
+              className="mt-8 w-full bg-purple-600 hover:bg-purple-500"
               onClick={() => handleBuy(tier.id)}
             >
               Buy
@@ -64,7 +72,7 @@ export function PaywallScreen() {
           </div>
         ))}
       </div>
-      <LinkButton href={routes.home} variant="link" className="mt-4 w-full text-zinc-400">
+      <LinkButton href={routes.home} variant="link" className="mt-6 w-full text-zinc-400">
         Back to home
       </LinkButton>
     </FunnelShell>

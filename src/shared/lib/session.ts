@@ -1,54 +1,37 @@
-import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import type { UtmPayload } from "@server/common/types";
+import { COOKIE_NAMES } from "./cookie-names";
+import {
+  signAdminToken,
+  signUserToken,
+  verifyAdminToken,
+  verifyUserToken,
+  type AdminSessionPayload,
+  type UserSessionPayload,
+} from "./jwt";
 
-const secret = () => new TextEncoder().encode(process.env.SESSION_SECRET || "dev-secret");
+export { COOKIE_NAMES };
+export type { AdminSessionPayload, UserSessionPayload };
 
-export const COOKIE_NAMES = {
-  funnelSession: "funnel_session",
-  userSession: "user_session",
-  utm: "utm_attribution",
-  dashboardAuth: "dashboard_auth",
-} as const;
-
-export interface UserSessionPayload {
-  userId: string;
-  email: string;
-  name: string;
-}
-
-export async function signToken(payload: UserSessionPayload | { role: string }, expiresIn = "7d") {
-  return new SignJWT({ ...payload })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime(expiresIn)
-    .sign(secret());
-}
-
-export async function verifyToken<T>(token: string): Promise<T | null> {
-  try {
-    const { payload } = await jwtVerify(token, secret());
-    return payload as T;
-  } catch {
-    return null;
-  }
-}
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+};
 
 export async function getUserSession(): Promise<UserSessionPayload | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAMES.userSession)?.value;
   if (!token) return null;
-  return verifyToken<UserSessionPayload>(token);
+  return verifyUserToken(token);
 }
 
-export async function setUserSession(payload: UserSessionPayload) {
+export async function setUserSession(payload: Omit<UserSessionPayload, "type">) {
   const cookieStore = await cookies();
-  const token = await signToken(payload);
+  const token = await signUserToken(payload);
   cookieStore.set(COOKIE_NAMES.userSession, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...cookieOptions,
     maxAge: 60 * 60 * 24 * 30,
   });
 }
@@ -56,6 +39,32 @@ export async function setUserSession(payload: UserSessionPayload) {
 export async function clearUserSession() {
   const cookieStore = await cookies();
   cookieStore.delete(COOKIE_NAMES.userSession);
+}
+
+export async function getAdminSession(): Promise<AdminSessionPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAMES.adminSession)?.value;
+  if (!token) return null;
+  return verifyAdminToken(token);
+}
+
+export async function setAdminSession() {
+  const cookieStore = await cookies();
+  const token = await signAdminToken();
+  cookieStore.set(COOKIE_NAMES.adminSession, token, {
+    ...cookieOptions,
+    maxAge: 60 * 60 * 24,
+  });
+}
+
+export async function clearAdminSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete(COOKIE_NAMES.adminSession);
+}
+
+export async function isDashboardAuthenticated() {
+  const session = await getAdminSession();
+  return session !== null;
 }
 
 export async function getFunnelSessionId(): Promise<string | null> {
@@ -66,10 +75,7 @@ export async function getFunnelSessionId(): Promise<string | null> {
 export async function setFunnelSessionId(sessionId: string) {
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAMES.funnelSession, sessionId, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...cookieOptions,
     maxAge: 60 * 60 * 24 * 30,
   });
 }
@@ -90,31 +96,8 @@ export async function getUtmFromCookies(): Promise<UtmPayload> {
 export async function setUtmCookie(utm: UtmPayload) {
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAMES.utm, JSON.stringify(utm), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...cookieOptions,
     maxAge: 60 * 60 * 24 * 30,
-  });
-}
-
-export async function isDashboardAuthenticated() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAMES.dashboardAuth)?.value;
-  if (!token) return false;
-  const payload = await verifyToken<{ role: string }>(token);
-  return payload?.role === "admin";
-}
-
-export async function setDashboardAuth() {
-  const cookieStore = await cookies();
-  const token = await signToken({ role: "admin" }, "1d");
-  cookieStore.set(COOKIE_NAMES.dashboardAuth, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24,
   });
 }
 

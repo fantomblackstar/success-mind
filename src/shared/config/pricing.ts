@@ -2,20 +2,16 @@ export const PRICING_TIERS = [
   {
     id: "starter",
     name: "Starter",
-    price: 49,
+    price: 10,
     recommended: false,
     features: ["AI chat", "Daily tips", "Goal tracking"],
   },
   {
     id: "pro",
     name: "Pro",
-    price: 99,
+    price: 1,
+    promoLabel: "Now — $1",
     recommended: true,
-    features: [
-      "Everything in Starter",
-      "Founder playbooks",
-      "Priority answers",
-      "Team sharing",
-    ],
+    features: ["All Starter features", "Founder playbooks", "Priority answers", "Team sharing"],
   },
 ] as const;

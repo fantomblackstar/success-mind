@@ -1,29 +1,42 @@
-import { cn } from "@/shared/lib";
+import { cn, cardHoverBorder } from "@/shared/lib";
+import { SectionTitle } from "@/shared/ui";
 
 export function FunnelShell({
   title,
   subtitle,
   step,
+  wide = false,
   children,
 }: {
   title: string;
   subtitle?: string;
   step?: string;
+  wide?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto flex min-h-[70vh] w-full max-w-lg flex-col justify-center px-4 py-12">
+    <div
+      className={cn(
+        "mx-auto flex min-h-[70vh] w-full flex-col justify-center px-4 py-12",
+        wide ? "max-w-5xl" : "max-w-xl",
+      )}
+    >
       {step ? (
-        <p className="mb-4 text-center text-xs uppercase tracking-widest text-purple-400">
+        <p className="mb-4 text-center text-sm uppercase tracking-widest text-purple-400">
           {step}
         </p>
       ) : null}
-      <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-8 shadow-2xl shadow-purple-950/20">
-        <h1 className="text-center text-2xl font-semibold text-white">
+      <div
+        className={cn(
+          cardHoverBorder,
+          "rounded-xl bg-zinc-900/80 p-10 shadow-2xl shadow-purple-950/20",
+        )}
+      >
+        <SectionTitle as="h1" className="text-3xl md:text-4xl">
           {title}
-        </h1>
+        </SectionTitle>
         {subtitle ? (
-          <p className="mt-2 text-center text-sm text-zinc-400">{subtitle}</p>
+          <p className="mt-3 text-center text-base text-zinc-400">{subtitle}</p>
         ) : null}
         <div className="mt-8">{children}</div>
       </div>
@@ -45,10 +58,10 @@ export function OptionButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full rounded-xl border px-4 py-3 text-left text-sm transition",
+        "w-full rounded-lg border px-5 py-4 text-left text-base transition",
         selected
           ? "border-purple-500 bg-purple-500/20 text-white"
-          : "border-white/10 bg-zinc-950/50 text-zinc-300 hover:border-purple-500/50",
+          : cn(cardHoverBorder, "bg-zinc-950/50 text-zinc-300"),
       )}
     >
       {children}
